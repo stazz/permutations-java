@@ -38,10 +38,8 @@ public class GenericComparablePermutationGenerator<T extends Comparable<T>> exte
 
         public GenericComparableArrayInfo( ElementType[] array )
         {
-            // TODO get rid of copying
-            ElementType[] copy = Arrays.copyOf( array, array.length );
-            Arrays.sort( copy );
-            this._array = copy;
+            Arrays.sort( array );
+            this._array = array;
 
             int distinctElements = this._array.length;
             for( int idx = 0; idx < this._array.length - 1; ++idx )

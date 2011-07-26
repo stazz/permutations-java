@@ -16,6 +16,7 @@ package math.permutations;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -176,7 +177,14 @@ public final class PermutationGeneratorProvider
     public static <ItemType extends Comparable<ItemType>> PermutationGenerator<ItemType[]> createGenericComparablePermutationGenerator(
         ItemType... items )
     {
-        return new GenericComparablePermutationGenerator<ItemType>( new GenericComparableArrayInfo<ItemType>( items ) );
+        return createGenericComparablePermutationGenerator( true, items );
+    }
+
+    private static <ItemType extends Comparable<ItemType>> PermutationGenerator<ItemType[]> createGenericComparablePermutationGenerator(
+        boolean copyArray, ItemType... items )
+    {
+        return new GenericComparablePermutationGenerator<ItemType>( new GenericComparableArrayInfo<ItemType>(
+            copyArray ? Arrays.copyOf( items, items.length ) : items ) );
     }
 
     /**
@@ -192,7 +200,7 @@ public final class PermutationGeneratorProvider
     {
         ItemType[] array = (ItemType[]) Array.newInstance( itemClass, items.size() );
         items.toArray( array );
-        return createGenericComparablePermutationGenerator( array );
+        return createGenericComparablePermutationGenerator( false, array );
     }
 
     /**
@@ -226,7 +234,14 @@ public final class PermutationGeneratorProvider
     public static <ItemType> PermutationGenerator<ItemType[]> createGenericPermutationGenerator(
         Comparator<ItemType> comparator, ItemType... items )
     {
-        return new GenericPermutationGenerator<ItemType>( new GenericArrayInfoImpl<ItemType>( items, comparator ) );
+        return createGenericPermutationGenerator( comparator, true, items );
+    }
+
+    private static <ItemType> PermutationGenerator<ItemType[]> createGenericPermutationGenerator(
+        Comparator<ItemType> comparator, Boolean copyArray, ItemType... items )
+    {
+        return new GenericPermutationGenerator<ItemType>( new GenericArrayInfoImpl<ItemType>(
+            copyArray ? Arrays.copyOf( items, items.length ) : items, comparator ) );
     }
 
     /**
@@ -243,7 +258,7 @@ public final class PermutationGeneratorProvider
     {
         ItemType[] array = (ItemType[]) Array.newInstance( itemClass, items.size() );
         items.toArray( array );
-        return createGenericPermutationGenerator( comparator, array );
+        return createGenericPermutationGenerator( comparator, false, array );
     }
 
     /**

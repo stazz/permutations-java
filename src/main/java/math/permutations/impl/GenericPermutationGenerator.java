@@ -39,10 +39,8 @@ public class GenericPermutationGenerator<T> extends AbstractGenericPermutationGe
 
         public GenericArrayInfoImpl( ElementType[] array, Comparator<ElementType> comparator )
         {
-            // TODO get rid of copying
-            ElementType[] copy = Arrays.copyOf( array, array.length );
-            Arrays.sort( copy, comparator );
-            this._array = copy;
+            Arrays.sort( array, comparator );
+            this._array = array;
             this._comparator = comparator;
 
             int distinctElements = this._array.length;
