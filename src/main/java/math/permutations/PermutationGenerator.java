@@ -41,6 +41,10 @@ import java.util.Iterator;
  * Each time a new {@link Iterator} is created, the array will be once again copied using one of
  * {@link Arrays#copyOf(Object[], int)} methods.
  * </p>
+ * <p>
+ * TODO: null values (for generic permutation generators - is null less or greater than anything else?) This seems to be
+ * possible only by providing custom comparator, since Arrays.sort throws on null values.
+ * </p>
  * 
  * @author Stanislav Muhametsin
  * @param <T> The type of the permutation array.

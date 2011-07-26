@@ -25,12 +25,64 @@ public class DoublePermutationGenerator extends AbstractPermutationGenerator<dou
 {
     private final double[] _array;
 
-    public DoublePermutationGenerator( double[] array )
+    public static class DoubleArrayInfo
+        implements ArrayInfo
     {
-        super( array.length );
+        private final double[] _array;
+        private final int[] _multiplicities;
 
-        this._array = Arrays.copyOf( array, array.length );
-        Arrays.sort( this._array );
+        public DoubleArrayInfo( double[] array )
+        {
+            double[] copy = Arrays.copyOf( array, array.length );
+            Arrays.sort( copy );
+            this._array = copy;
+
+            int distinctElements = this._array.length;
+            for( int idx = 0; idx < this._array.length - 1; ++idx )
+            {
+                // Use Double.compare to ensure natural ordering of NaN's and in order -0.0d be less than 0.0d
+                if( Double.compare( this._array[idx], this._array[idx + 1] ) == 0 )
+                {
+                    --distinctElements;
+                }
+            }
+            this._multiplicities = new int[distinctElements];
+            Arrays.fill( this._multiplicities, 0 );
+            int mulIndex = 0;
+            for( int idx = 0; idx < this._array.length; ++idx )
+            {
+                ++this._multiplicities[mulIndex];
+                if( idx < this._array.length - 1 && Double.compare( this._array[idx], this._array[idx + 1] ) != 0 )
+                {
+                    ++mulIndex;
+                }
+            }
+        }
+
+        public double[] getArray()
+        {
+            return this._array;
+        }
+
+        @Override
+        public int getArrayLength()
+        {
+            return this._array.length;
+        }
+
+        @Override
+        public int[] getMultiplicities()
+        {
+            return this._multiplicities;
+        }
+
+    }
+
+    public DoublePermutationGenerator( DoubleArrayInfo array )
+    {
+        super( array );
+
+        this._array = array.getArray();
     }
 
     @Override
@@ -46,7 +98,7 @@ public class DoublePermutationGenerator extends AbstractPermutationGenerator<dou
 
                 // Find largest index j with a[j] < a[j+1]
                 int j = array.length - 2;
-                while( array[j] > array[j + 1] )
+                while( Double.compare( array[j], array[j + 1] ) >= 0 )
                 {
                     j--;
                 }
@@ -54,7 +106,7 @@ public class DoublePermutationGenerator extends AbstractPermutationGenerator<dou
                 // Find index k such that a[k] is smallest integer
                 // greater than a[j] to the right of a[j]
                 int k = array.length - 1;
-                while( array[j] > array[k] )
+                while( Double.compare( array[j], array[k] ) >= 0 )
                 {
                     k--;
                 }

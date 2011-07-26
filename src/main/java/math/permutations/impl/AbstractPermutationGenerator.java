@@ -19,7 +19,6 @@ import java.util.Iterator;
 
 import math.permutations.PermutationGenerator;
 
-
 /**
  * 
  * @author 2011 Stanislav Muhametsin
@@ -27,11 +26,24 @@ import math.permutations.PermutationGenerator;
 public abstract class AbstractPermutationGenerator<T>
     implements PermutationGenerator<T>
 {
+    public static interface ArrayInfo
+    {
+        public int getArrayLength();
+
+        public int[] getMultiplicities();
+    }
+
     private final BigInteger _total;
 
-    public AbstractPermutationGenerator( int arrayLength )
+    public AbstractPermutationGenerator( ArrayInfo arrayInfo )
     {
-        this._total = getFactorial( arrayLength );
+        BigInteger upper = getFactorial( arrayInfo.getArrayLength() );
+        BigInteger lower = BigInteger.ONE;
+        for( int multiplicity : arrayInfo.getMultiplicities() )
+        {
+            lower = lower.multiply( getFactorial( multiplicity ) );
+        }
+        this._total = upper.divide( lower );
     }
 
     @Override
@@ -53,7 +65,7 @@ public abstract class AbstractPermutationGenerator<T>
         BigInteger fact = BigInteger.ONE;
         for( int i = n; i > 1; i-- )
         {
-            fact = fact.multiply( new BigInteger( Integer.toString( i ) ) );
+            fact = fact.multiply( BigInteger.valueOf( i ) );
         }
         return fact;
     }

@@ -23,14 +23,66 @@ import java.util.Iterator;
  */
 public class FloatPermutationGenerator extends AbstractPermutationGenerator<float[]>
 {
+    public static class FloatArrayInfo
+        implements ArrayInfo
+    {
+        private final float[] _array;
+        private final int[] _multiplicities;
+
+        public FloatArrayInfo( float[] array )
+        {
+            float[] copy = Arrays.copyOf( array, array.length );
+            Arrays.sort( copy );
+            this._array = copy;
+
+            int distinctElements = this._array.length;
+            for( int idx = 0; idx < this._array.length - 1; ++idx )
+            {
+                // Use Float.compare to ensure natural ordering of NaN's and in order -0.0d be less than 0.0d
+                if( Float.compare( this._array[idx], this._array[idx + 1] ) == 0 )
+                {
+                    --distinctElements;
+                }
+            }
+            this._multiplicities = new int[distinctElements];
+            Arrays.fill( this._multiplicities, 0 );
+            int mulIndex = 0;
+            for( int idx = 0; idx < this._array.length; ++idx )
+            {
+                ++this._multiplicities[mulIndex];
+                if( idx < this._array.length - 1 && Float.compare( this._array[idx], this._array[idx + 1] ) != 0 )
+                {
+                    ++mulIndex;
+                }
+            }
+        }
+
+        public float[] getArray()
+        {
+            return this._array;
+        }
+
+        @Override
+        public int getArrayLength()
+        {
+            return this._array.length;
+        }
+
+        @Override
+        public int[] getMultiplicities()
+        {
+            return this._multiplicities;
+        }
+
+    }
+
     private final float[] _array;
 
-    public FloatPermutationGenerator( float[] array )
+    public FloatPermutationGenerator( FloatArrayInfo array )
     {
-        super( array.length );
+        super( array );
 
-        this._array = Arrays.copyOf( array, array.length );
-        Arrays.sort( this._array );
+        this._array = array.getArray();
     }
 
     @Override
@@ -46,7 +98,7 @@ public class FloatPermutationGenerator extends AbstractPermutationGenerator<floa
 
                 // Find largest index j with a[j] < a[j+1]
                 int j = array.length - 2;
-                while( array[j] > array[j + 1] )
+                while( Float.compare( array[j], array[j + 1] ) >= 0 )
                 {
                     j--;
                 }
@@ -54,7 +106,7 @@ public class FloatPermutationGenerator extends AbstractPermutationGenerator<floa
                 // Find index k such that a[k] is smallest integer
                 // greater than a[j] to the right of a[j]
                 int k = array.length - 1;
-                while( array[j] > array[k] )
+                while( Float.compare( array[j], array[k] ) >= 0 )
                 {
                     k--;
                 }

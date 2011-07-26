@@ -30,11 +30,63 @@ public class GenericComparablePermutationGenerator<T extends Comparable<T>> exte
     AbstractGenericPermutationGenerator<T>
 {
 
-    public GenericComparablePermutationGenerator( T[] array )
+    public static class GenericComparableArrayInfo<ElementType extends Comparable<ElementType>>
+        implements GenericArrayInfo<ElementType>
     {
-        super( array );
+        private final ElementType[] _array;
+        private final int[] _multiplicities;
 
-        Arrays.sort( this.getArray() );
+        public GenericComparableArrayInfo( ElementType[] array )
+        {
+            // TODO get rid of copying
+            ElementType[] copy = Arrays.copyOf( array, array.length );
+            Arrays.sort( copy );
+            this._array = copy;
+
+            int distinctElements = this._array.length;
+            for( int idx = 0; idx < this._array.length - 1; ++idx )
+            {
+                if( this._array[idx].compareTo( this._array[idx + 1] ) == 0 )
+                {
+                    --distinctElements;
+                }
+            }
+            this._multiplicities = new int[distinctElements];
+            Arrays.fill( this._multiplicities, 0 );
+            int mulIndex = 0;
+            for( int idx = 0; idx < this._array.length; ++idx )
+            {
+                ++this._multiplicities[mulIndex];
+                if( idx < this._array.length - 1 && this._array[idx].compareTo( this._array[idx + 1] ) != 0 )
+                {
+                    ++mulIndex;
+                }
+            }
+
+        }
+
+        @Override
+        public ElementType[] getArray()
+        {
+            return this._array;
+        }
+
+        @Override
+        public int getArrayLength()
+        {
+            return this._array.length;
+        }
+
+        @Override
+        public int[] getMultiplicities()
+        {
+            return this._multiplicities;
+        }
+    }
+
+    public GenericComparablePermutationGenerator( GenericComparableArrayInfo<T> arrayInfo )
+    {
+        super( arrayInfo );
     }
 
     @Override
@@ -49,7 +101,7 @@ public class GenericComparablePermutationGenerator<T extends Comparable<T>> exte
 
                 // Find largest index j with a[j] < a[j+1]
                 int j = a.length - 2;
-                while( a[j].compareTo( a[j + 1] ) > 0 )
+                while( a[j].compareTo( a[j + 1] ) >= 0 )
                 {
                     j--;
                 }
@@ -57,7 +109,7 @@ public class GenericComparablePermutationGenerator<T extends Comparable<T>> exte
                 // Find index k such that a[k] is smallest integer
                 // greater than a[j] to the right of a[j]
                 int k = a.length - 1;
-                while( a[j].compareTo( a[k] ) > 0 )
+                while( a[j].compareTo( a[k] ) >= 0 )
                 {
                     k--;
                 }

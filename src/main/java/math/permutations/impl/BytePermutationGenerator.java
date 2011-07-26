@@ -26,12 +26,64 @@ public class BytePermutationGenerator extends AbstractPermutationGenerator<byte[
 
     private final byte[] _array;
 
-    public BytePermutationGenerator( byte[] array )
+    public static class ByteArrayInfo
+        implements ArrayInfo
     {
-        super( array.length );
+        private final byte[] _array;
+        private final int[] _multiplicities;
 
-        this._array = Arrays.copyOf( array, array.length );
-        Arrays.sort( this._array );
+        public ByteArrayInfo( byte[] array )
+        {
+            byte[] copy = Arrays.copyOf( array, array.length );
+            Arrays.sort( copy );
+            this._array = copy;
+
+            int distinctElements = this._array.length;
+            for( int idx = 0; idx < this._array.length - 1; ++idx )
+            {
+                if( this._array[idx] == this._array[idx + 1] )
+                {
+                    --distinctElements;
+                }
+            }
+            this._multiplicities = new int[distinctElements];
+            Arrays.fill( this._multiplicities, 0 );
+            int mulIndex = 0;
+            for( int idx = 0; idx < this._array.length; ++idx )
+            {
+                ++this._multiplicities[mulIndex];
+                if( idx < this._array.length - 1 && this._array[idx] != this._array[idx + 1] )
+                {
+                    ++mulIndex;
+                }
+            }
+
+        }
+
+        public byte[] getArray()
+        {
+            return this._array;
+        }
+
+        @Override
+        public int getArrayLength()
+        {
+            return this._array.length;
+        }
+
+        @Override
+        public int[] getMultiplicities()
+        {
+            return this._multiplicities;
+        }
+
+    }
+
+    public BytePermutationGenerator( ByteArrayInfo array )
+    {
+        super( array );
+
+        this._array = array.getArray();
     }
 
     @Override
@@ -47,7 +99,7 @@ public class BytePermutationGenerator extends AbstractPermutationGenerator<byte[
 
                 // Find largest index j with a[j] < a[j+1]
                 int j = array.length - 2;
-                while( array[j] > array[j + 1] )
+                while( array[j] >= array[j + 1] )
                 {
                     j--;
                 }
@@ -55,7 +107,7 @@ public class BytePermutationGenerator extends AbstractPermutationGenerator<byte[
                 // Find index k such that a[k] is smallest integer
                 // greater than a[j] to the right of a[j]
                 int k = array.length - 1;
-                while( array[j] > array[k] )
+                while( array[j] >= array[k] )
                 {
                     k--;
                 }
@@ -80,5 +132,4 @@ public class BytePermutationGenerator extends AbstractPermutationGenerator<byte[
             }
         };
     }
-
 }

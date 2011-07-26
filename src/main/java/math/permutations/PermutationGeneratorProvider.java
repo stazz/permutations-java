@@ -24,14 +24,21 @@ import java.util.List;
 import java.util.Map;
 
 import math.permutations.impl.BytePermutationGenerator;
+import math.permutations.impl.BytePermutationGenerator.ByteArrayInfo;
 import math.permutations.impl.DoublePermutationGenerator;
+import math.permutations.impl.DoublePermutationGenerator.DoubleArrayInfo;
 import math.permutations.impl.FloatPermutationGenerator;
+import math.permutations.impl.FloatPermutationGenerator.FloatArrayInfo;
 import math.permutations.impl.GenericComparablePermutationGenerator;
+import math.permutations.impl.GenericComparablePermutationGenerator.GenericComparableArrayInfo;
 import math.permutations.impl.GenericPermutationGenerator;
-import math.permutations.impl.IntegerPermutationGenerator;
+import math.permutations.impl.GenericPermutationGenerator.GenericArrayInfoImpl;
+import math.permutations.impl.IntPermutationGenerator;
+import math.permutations.impl.IntPermutationGenerator.IntArrayInfo;
 import math.permutations.impl.LongPermutationGenerator;
+import math.permutations.impl.LongPermutationGenerator.LongArrayInfo;
 import math.permutations.impl.ShortPermutationGenerator;
-
+import math.permutations.impl.ShortPermutationGenerator.ShortArrayInfo;
 
 /**
  * This the factory class containing the static methods used to instantiate {@link PermutationGenerator}s. It will use
@@ -75,7 +82,8 @@ public final class PermutationGeneratorProvider
             @Override
             public <ArrayType> PermutationGenerator<ArrayType> createOptimizedGenerator( ArrayType array )
             {
-                return (PermutationGenerator<ArrayType>) new BytePermutationGenerator( (byte[]) array );
+                return (PermutationGenerator<ArrayType>) new BytePermutationGenerator( new ByteArrayInfo(
+                    (byte[]) array ) );
             }
         } );
         optimizedConstructors.put( double[].class, new OptimizedGeneratorCreator()
@@ -83,7 +91,8 @@ public final class PermutationGeneratorProvider
             @Override
             public <ArrayType> PermutationGenerator<ArrayType> createOptimizedGenerator( ArrayType array )
             {
-                return (PermutationGenerator<ArrayType>) new DoublePermutationGenerator( (double[]) array );
+                return (PermutationGenerator<ArrayType>) new DoublePermutationGenerator( new DoubleArrayInfo(
+                    (double[]) array ) );
             }
         } );
         optimizedConstructors.put( float[].class, new OptimizedGeneratorCreator()
@@ -91,7 +100,8 @@ public final class PermutationGeneratorProvider
             @Override
             public <ArrayType> PermutationGenerator<ArrayType> createOptimizedGenerator( ArrayType array )
             {
-                return (PermutationGenerator<ArrayType>) new FloatPermutationGenerator( (float[]) array );
+                return (PermutationGenerator<ArrayType>) new FloatPermutationGenerator( new FloatArrayInfo(
+                    (float[]) array ) );
             }
         } );
         optimizedConstructors.put( int[].class, new OptimizedGeneratorCreator()
@@ -99,7 +109,7 @@ public final class PermutationGeneratorProvider
             @Override
             public <ArrayType> PermutationGenerator<ArrayType> createOptimizedGenerator( ArrayType array )
             {
-                return (PermutationGenerator<ArrayType>) new IntegerPermutationGenerator( (int[]) array );
+                return (PermutationGenerator<ArrayType>) new IntPermutationGenerator( new IntArrayInfo( (int[]) array ) );
             }
         } );
         optimizedConstructors.put( long[].class, new OptimizedGeneratorCreator()
@@ -107,7 +117,8 @@ public final class PermutationGeneratorProvider
             @Override
             public <ArrayType> PermutationGenerator<ArrayType> createOptimizedGenerator( ArrayType array )
             {
-                return (PermutationGenerator<ArrayType>) new LongPermutationGenerator( (long[]) array );
+                return (PermutationGenerator<ArrayType>) new LongPermutationGenerator( new LongArrayInfo(
+                    (long[]) array ) );
             }
         } );
         optimizedConstructors.put( short[].class, new OptimizedGeneratorCreator()
@@ -115,7 +126,8 @@ public final class PermutationGeneratorProvider
             @Override
             public <ArrayType> PermutationGenerator<ArrayType> createOptimizedGenerator( ArrayType array )
             {
-                return (PermutationGenerator<ArrayType>) new ShortPermutationGenerator( (short[]) array );
+                return (PermutationGenerator<ArrayType>) new ShortPermutationGenerator( new ShortArrayInfo(
+                    (short[]) array ) );
             }
         } );
 
@@ -158,16 +170,13 @@ public final class PermutationGeneratorProvider
     /**
      * Creates a new permutation generator for given item class.
      * 
-     * @param itemClass The common class of the items of permutation array.
      * @param items The permutation items.
      * @return The {@link PermutationGenerator} for given items.
      */
-    public static <ItemType extends Comparable<ItemType>> PermutationGenerator<ItemType[]> createGenericPermutationGenerator(
-        Class<ItemType> itemClass, ItemType... items )
+    public static <ItemType extends Comparable<ItemType>> PermutationGenerator<ItemType[]> createGenericComparablePermutationGenerator(
+        ItemType... items )
     {
-        // TODO create specific permutation generators for byte, int, short, long, double, float, and use them instead
-        // of generic implementation whenever possible.
-        return new GenericComparablePermutationGenerator<ItemType>( items );
+        return new GenericComparablePermutationGenerator<ItemType>( new GenericComparableArrayInfo<ItemType>( items ) );
     }
 
     /**
@@ -178,12 +187,12 @@ public final class PermutationGeneratorProvider
      * @param items The permutation items.
      * @return The {@link PermutationGenerator} for given items.
      */
-    public static <ItemType extends Comparable<ItemType>> PermutationGenerator<ItemType[]> createGenericPermutationGenerator(
-        Class<ItemType> itemClass, Collection<ItemType> items )
+    public static <ItemType extends Comparable<ItemType>> PermutationGenerator<ItemType[]> createGenericComparablePermutationGenerator(
+        Class<ItemType> itemClass, Collection<? extends ItemType> items )
     {
         ItemType[] array = (ItemType[]) Array.newInstance( itemClass, items.size() );
         items.toArray( array );
-        return createGenericPermutationGenerator( itemClass, array );
+        return createGenericComparablePermutationGenerator( array );
     }
 
     /**
@@ -194,33 +203,30 @@ public final class PermutationGeneratorProvider
      * @param items The permutation items.
      * @return The {@link PermutationGenerator} for given items.
      */
-    public static <ItemType extends Comparable<ItemType>> PermutationGenerator<ItemType[]> createGenericPermutationGenerator(
-        Class<ItemType> itemClass, Iterable<ItemType> items )
+    public static <ItemType extends Comparable<ItemType>> PermutationGenerator<ItemType[]> createGenericComparablePermutationGenerator(
+        Class<ItemType> itemClass, Iterable<? extends ItemType> items )
     {
         List<ItemType> list = new ArrayList<ItemType>();
-        Iterator<ItemType> iter = items.iterator();
+        Iterator<? extends ItemType> iter = items.iterator();
         while( iter.hasNext() )
         {
             list.add( iter.next() );
         }
 
-        return createGenericPermutationGenerator( itemClass, list );
+        return createGenericComparablePermutationGenerator( itemClass, list );
     }
 
     /**
      * Creates a new permutation generator for given item class using given comparator.
      * 
-     * @param itemClass The common class of the items of permutation array.
      * @param comparator The comparator to use.
      * @param items The permutation items.
      * @return The {@link PermutationGenerator} for given items.
      */
     public static <ItemType> PermutationGenerator<ItemType[]> createGenericPermutationGenerator(
-        Class<ItemType> itemClass, Comparator<ItemType> comparator, ItemType... items )
+        Comparator<ItemType> comparator, ItemType... items )
     {
-        // TODO create specific permutation generators for byte, int, short, long, double, float, and use them instead
-        // of generic implementation whenever possible.
-        return new GenericPermutationGenerator<ItemType>( items, comparator );
+        return new GenericPermutationGenerator<ItemType>( new GenericArrayInfoImpl<ItemType>( items, comparator ) );
     }
 
     /**
@@ -233,11 +239,11 @@ public final class PermutationGeneratorProvider
      * @return The {@link PermutationGenerator} for given items.
      */
     public static <ItemType> PermutationGenerator<ItemType[]> createGenericPermutationGenerator(
-        Class<ItemType> itemClass, Comparator<ItemType> comparator, Collection<ItemType> items )
+        Class<ItemType> itemClass, Comparator<ItemType> comparator, Collection<? extends ItemType> items )
     {
         ItemType[] array = (ItemType[]) Array.newInstance( itemClass, items.size() );
         items.toArray( array );
-        return createGenericPermutationGenerator( itemClass, comparator, array );
+        return createGenericPermutationGenerator( comparator, array );
     }
 
     /**
@@ -250,10 +256,10 @@ public final class PermutationGeneratorProvider
      * @return The {@link PermutationGenerator} for given items.
      */
     public static <ItemType> PermutationGenerator<ItemType[]> createGenericPermutationGenerator(
-        Class<ItemType> itemClass, Comparator<ItemType> comparator, Iterable<ItemType> items )
+        Class<ItemType> itemClass, Comparator<ItemType> comparator, Iterable<? extends ItemType> items )
     {
         List<ItemType> list = new ArrayList<ItemType>();
-        Iterator<ItemType> iter = items.iterator();
+        Iterator<? extends ItemType> iter = items.iterator();
         while( iter.hasNext() )
         {
             list.add( iter.next() );

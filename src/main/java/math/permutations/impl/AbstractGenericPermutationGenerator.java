@@ -15,6 +15,7 @@
 package math.permutations.impl;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * 
@@ -25,17 +26,27 @@ import java.util.Arrays;
 public abstract class AbstractGenericPermutationGenerator<T> extends AbstractPermutationGenerator<T[]>
 {
 
-    private final T[] _a;
+    private final T[] _array;
 
-    public AbstractGenericPermutationGenerator( T[] array )
+    public static interface GenericArrayInfo<ElementType>
+        extends ArrayInfo
     {
-        super( array.length );
-        this._a = Arrays.copyOf( array, array.length );
+        public ElementType[] getArray();
+    }
+
+    protected static interface DistinctElementCounter<U>
+    {
+        public int getDistinctElements( U[] array );
+    }
+
+    public AbstractGenericPermutationGenerator( GenericArrayInfo<T> arrayInfo )
+    {
+        super( arrayInfo );
+        this._array = arrayInfo.getArray();
     }
 
     public T[] getArray()
     {
-        return this._a;
+        return this._array;
     }
-
 }
