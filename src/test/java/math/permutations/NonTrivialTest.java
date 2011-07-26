@@ -14,8 +14,6 @@
 
 package math.permutations;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
 /**
@@ -136,6 +134,106 @@ public class NonTrivialTest extends AbstractPermutationTest
         }, new double[]
         {
             DOUBLE1, DOUBLE1, DOUBLE1
+        } );
+    }
+
+    @Test
+    public void testPermutationsWithArrayOfEmptyStrings()
+    {
+        this.runGenericComparableTest1( new String[][]
+        {
+            new String[] {
+
+            }
+        } );
+    }
+
+    @Test
+    public void testPermutationsWithArrayOfEmptyIntWrappers()
+    {
+        this.runGenericTest1( new IntWrapper[][]
+        {
+            new IntWrapper[] {
+
+            }
+        }, IntWrapperComparator.INSTANCE );
+    }
+
+    @Test
+    public void testPermutationsWithArrayOfEmptyBytes()
+    {
+        this.runOptimizedTest( new byte[][]
+        {
+            new byte[] {
+
+            }
+        }, new byte[] {
+
+        } );
+    }
+
+    @Test
+    public void testPermutationsWithArrayOfEmptyShorts()
+    {
+        this.runOptimizedTest( new short[][]
+        {
+            new short[] {
+
+            }
+        }, new short[] {
+
+        } );
+    }
+
+    @Test
+    public void testPermutationsWithArrayOfEmptyInts()
+    {
+        this.runOptimizedTest( new int[][]
+        {
+            new int[] {
+
+            }
+        }, new int[] {
+
+        } );
+    }
+
+    @Test
+    public void testPermutationsWithArrayOfEmptyLongs()
+    {
+        this.runOptimizedTest( new long[][]
+        {
+            new long[] {
+
+            }
+        }, new long[] {
+
+        } );
+    }
+
+    @Test
+    public void testPermutationsWithArrayOfEmptyFloats()
+    {
+        this.runOptimizedTest( new float[][]
+        {
+            new float[] {
+
+            }
+        }, new float[] {
+
+        } );
+    }
+
+    @Test
+    public void testPermutationsWithArrayOfEmptyDoubles()
+    {
+        this.runOptimizedTest( new double[][]
+        {
+            new double[] {
+
+            }
+        }, new double[] {
+
         } );
     }
 
