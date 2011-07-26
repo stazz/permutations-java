@@ -12,7 +12,7 @@
  *
  */
 
-package java.math.permutations.impl;
+package math.permutations.impl;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -21,11 +21,12 @@ import java.util.Iterator;
  * 
  * @author 2011 Stanislav Muhametsin
  */
-public class FloatPermutationGenerator extends AbstractPermutationGenerator<float[]>
+public class BytePermutationGenerator extends AbstractPermutationGenerator<byte[]>
 {
-    private final float[] _array;
 
-    public FloatPermutationGenerator( float[] array )
+    private final byte[] _array;
+
+    public BytePermutationGenerator( byte[] array )
     {
         super( array.length );
 
@@ -34,14 +35,14 @@ public class FloatPermutationGenerator extends AbstractPermutationGenerator<floa
     }
 
     @Override
-    protected Iterator<float[]> createIterator()
+    protected Iterator<byte[]> createIterator()
     {
-        return new AbstractPermutationIterator<float[]>( this._array, this.getTotal() )
+        return new AbstractPermutationIterator<byte[]>( this._array, this.getTotal() )
         {
             @Override
-            protected void makeNextPermutation( float[] array )
+            protected void makeNextPermutation( byte[] array )
             {
-                float temp = 0.0f;
+                byte temp = 0;
 
                 // Find largest index j with a[j] < a[j+1]
                 int j = array.length - 2;
@@ -78,4 +79,5 @@ public class FloatPermutationGenerator extends AbstractPermutationGenerator<floa
             }
         };
     }
+
 }

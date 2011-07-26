@@ -12,7 +12,7 @@
  *
  */
 
-package java.math.permutations;
+package math.permutations;
 
 import java.math.BigInteger;
 import java.util.Arrays;

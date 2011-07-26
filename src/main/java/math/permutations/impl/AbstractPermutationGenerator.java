@@ -12,11 +12,12 @@
  *
  */
 
-package java.math.permutations.impl;
+package math.permutations.impl;
 
 import java.math.BigInteger;
-import java.math.permutations.PermutationGenerator;
 import java.util.Iterator;
+
+import math.permutations.PermutationGenerator;
 
 
 /**

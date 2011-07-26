@@ -12,45 +12,40 @@
  *
  */
 
-package java.math.permutations.impl;
+package math.permutations.impl;
 
-import java.math.permutations.PermutationGenerator;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.Iterator;
 
-
 /**
- * This is the generic implementation of {@link PermutationGenerator}, where array elements are instances of any object.
- * The comparator must be provided in order to ensure the correct creation of each permutation.
  * 
  * @author 2011 Stanislav Muhametsin
- * @param <T> The common type of the elements of the permutation array.
  */
-public class GenericPermutationGenerator<T> extends AbstractGenericPermutationGenerator<T>
+public class IntegerPermutationGenerator extends AbstractPermutationGenerator<int[]>
 {
+    private final int[] _array;
 
-    private final Comparator<T> _comparator;
-
-    public GenericPermutationGenerator( T[] array, Comparator<T> comparator )
+    public IntegerPermutationGenerator( int[] array )
     {
-        super( array );
+        super( array.length );
 
-        this._comparator = comparator;
+        this._array = Arrays.copyOf( array, array.length );
+        Arrays.sort( this._array );
     }
 
     @Override
-    protected Iterator<T[]> createIterator()
+    protected Iterator<int[]> createIterator()
     {
-        return new AbstractPermutationIterator<T[]>( this.getArray(), this.getTotal() )
+        return new AbstractPermutationIterator<int[]>( this._array, this.getTotal() )
         {
             @Override
-            protected void makeNextPermutation( T[] array )
+            protected void makeNextPermutation( int[] array )
             {
-                T temp = null;
+                int temp = 0;
 
                 // Find largest index j with a[j] < a[j+1]
                 int j = array.length - 2;
-                while( _comparator.compare( array[j], array[j + 1] ) > 0 )
+                while( array[j] > array[j + 1] )
                 {
                     j--;
                 }
@@ -58,7 +53,7 @@ public class GenericPermutationGenerator<T> extends AbstractGenericPermutationGe
                 // Find index k such that a[k] is smallest integer
                 // greater than a[j] to the right of a[j]
                 int k = array.length - 1;
-                while( _comparator.compare( array[j], array[k] ) > 0 )
+                while( array[j] > array[k] )
                 {
                     k--;
                 }

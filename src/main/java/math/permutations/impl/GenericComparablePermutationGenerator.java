@@ -12,66 +12,70 @@
  *
  */
 
-package java.math.permutations.impl;
+package math.permutations.impl;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
+import math.permutations.PermutationGenerator;
+
 /**
+ * This is the generic implementation of {@link PermutationGenerator}, where array elements are instances of
+ * {@link Comparable}.
  * 
- * @author 2011 Stanislav Muhametsin
+ * @author Stanislav Muhametsin
+ * @param <T> The common type of the elements of the permutation array.
  */
-public class DoublePermutationGenerator extends AbstractPermutationGenerator<double[]>
+public class GenericComparablePermutationGenerator<T extends Comparable<T>> extends
+    AbstractGenericPermutationGenerator<T>
 {
-    private final double[] _array;
 
-    public DoublePermutationGenerator( double[] array )
+    public GenericComparablePermutationGenerator( T[] array )
     {
-        super( array.length );
+        super( array );
 
-        this._array = Arrays.copyOf( array, array.length );
-        Arrays.sort( this._array );
+        Arrays.sort( this.getArray() );
     }
 
     @Override
-    protected Iterator<double[]> createIterator()
+    protected Iterator<T[]> createIterator()
     {
-        return new AbstractPermutationIterator<double[]>( this._array, this.getTotal() )
+        return new AbstractPermutationIterator<T[]>( this.getArray(), this.getTotal() )
         {
             @Override
-            protected void makeNextPermutation( double[] array )
+            protected void makeNextPermutation( T[] a )
             {
-                double temp = 0.0;
+                T temp = null;
 
                 // Find largest index j with a[j] < a[j+1]
-                int j = array.length - 2;
-                while( array[j] > array[j + 1] )
+                int j = a.length - 2;
+                while( a[j].compareTo( a[j + 1] ) > 0 )
                 {
                     j--;
                 }
 
                 // Find index k such that a[k] is smallest integer
                 // greater than a[j] to the right of a[j]
-                int k = array.length - 1;
-                while( array[j] > array[k] )
+                int k = a.length - 1;
+                while( a[j].compareTo( a[k] ) > 0 )
                 {
                     k--;
                 }
 
                 // Interchange a[j] and a[k]
-                temp = array[k];
-                array[k] = array[j];
-                array[j] = temp;
+                temp = a[k];
+                a[k] = a[j];
+                a[j] = temp;
 
                 // Put tail end of permutation after jth position in increasing order
-                int r = array.length - 1;
+                int r = a.length - 1;
                 int s = j + 1;
 
                 while( r > s )
                 {
-                    temp = array[s];
-                    array[s] = array[r];
-                    array[r] = temp;
+                    temp = a[s];
+                    a[s] = a[r];
+                    a[r] = temp;
                     r--;
                     s++;
                 }

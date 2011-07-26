@@ -27,4 +27,4 @@ PermutationGenerator<int[]> optimizedGenerator = PermutationGeneratorProvider
 Object[] objArray = ...;
 Comparator<Object> comparator = ...;
 PermutationGenerator<Object[]> genericGenerator = PermutationGeneratorProvider
-  .createGenericPErmutationGenerator(Object.class, comparator, objArray);
+  .createGenericPermutationGenerator(Object.class, comparator, objArray);

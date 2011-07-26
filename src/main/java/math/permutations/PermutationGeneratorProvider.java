@@ -12,18 +12,9 @@
  *
  */
 
-package java.math.permutations;
+package math.permutations;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.math.permutations.impl.BytePermutationGenerator;
-import java.math.permutations.impl.DoublePermutationGenerator;
-import java.math.permutations.impl.FloatPermutationGenerator;
-import java.math.permutations.impl.GenericComparablePermutationGenerator;
-import java.math.permutations.impl.GenericPermutationGenerator;
-import java.math.permutations.impl.IntegerPermutationGenerator;
-import java.math.permutations.impl.LongPermutationGenerator;
-import java.math.permutations.impl.ShortPermutationGenerator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -31,6 +22,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import math.permutations.impl.BytePermutationGenerator;
+import math.permutations.impl.DoublePermutationGenerator;
+import math.permutations.impl.FloatPermutationGenerator;
+import math.permutations.impl.GenericComparablePermutationGenerator;
+import math.permutations.impl.GenericPermutationGenerator;
+import math.permutations.impl.IntegerPermutationGenerator;
+import math.permutations.impl.LongPermutationGenerator;
+import math.permutations.impl.ShortPermutationGenerator;
 
 
 /**

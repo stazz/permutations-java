@@ -12,7 +12,7 @@
  *
  */
 
-package java.math.permutations.impl;
+package math.permutations.impl;
 
 import java.util.Arrays;
 
@@ -31,7 +31,6 @@ public abstract class AbstractGenericPermutationGenerator<T> extends AbstractPer
     {
         super( array.length );
         this._a = Arrays.copyOf( array, array.length );
-        Arrays.sort( this._a );
     }
 
     public T[] getArray()
