@@ -40,7 +40,7 @@ public class GenericComparablePermutationGenerator<T extends Comparable<T>> exte
     @Override
     protected Iterator<T[]> createIterator()
     {
-        return new AbstractPermutationIterator<T[]>( this.getArray(), this.getTotal() )
+        return new AbstractGenericPermutationIterator<T>( this.getArray(), this.getTotal() )
         {
             @Override
             protected void makeNextPermutation( T[] a )

@@ -36,7 +36,8 @@ public class ShortPermutationGenerator extends AbstractPermutationGenerator<shor
     @Override
     protected Iterator<short[]> createIterator()
     {
-        return new AbstractPermutationIterator<short[]>( this._array, this.getTotal() )
+        return new AbstractPermutationIterator<short[]>( Arrays.copyOf( this._array, this._array.length ),
+            this.getTotal() )
         {
             @Override
             protected void makeNextPermutation( short[] array )

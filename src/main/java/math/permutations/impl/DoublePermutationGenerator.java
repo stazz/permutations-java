@@ -36,7 +36,8 @@ public class DoublePermutationGenerator extends AbstractPermutationGenerator<dou
     @Override
     protected Iterator<double[]> createIterator()
     {
-        return new AbstractPermutationIterator<double[]>( this._array, this.getTotal() )
+        return new AbstractPermutationIterator<double[]>( Arrays.copyOf( this._array, this._array.length ),
+            this.getTotal() )
         {
             @Override
             protected void makeNextPermutation( double[] array )

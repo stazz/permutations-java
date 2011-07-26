@@ -36,7 +36,8 @@ public class IntegerPermutationGenerator extends AbstractPermutationGenerator<in
     @Override
     protected Iterator<int[]> createIterator()
     {
-        return new AbstractPermutationIterator<int[]>( this._array, this.getTotal() )
+        return new AbstractPermutationIterator<int[]>( Arrays.copyOf( this._array, this._array.length ),
+            this.getTotal() )
         {
             @Override
             protected void makeNextPermutation( int[] array )

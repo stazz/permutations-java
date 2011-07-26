@@ -36,7 +36,8 @@ public class FloatPermutationGenerator extends AbstractPermutationGenerator<floa
     @Override
     protected Iterator<float[]> createIterator()
     {
-        return new AbstractPermutationIterator<float[]>( this._array, this.getTotal() )
+        return new AbstractPermutationIterator<float[]>( Arrays.copyOf( this._array, this._array.length ),
+            this.getTotal() )
         {
             @Override
             protected void makeNextPermutation( float[] array )

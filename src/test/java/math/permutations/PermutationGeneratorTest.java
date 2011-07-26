@@ -14,6 +14,7 @@
 
 package math.permutations;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -31,7 +32,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * TODO test actual permutation sequences.
+ * TODO test actual permutation sequences. TODO test with arrays with multiple same values.
  * 
  * @author 2011 Stanislav Muhametsin
  */
@@ -76,6 +77,28 @@ public class PermutationGeneratorTest
     public static final byte BYTE1 = 1;
     public static final byte BYTE2 = 2;
     public static final byte BYTE3 = 3;
+    public static final byte[][] BYTE_SEQUENCES = new byte[][]
+    {
+        new byte[]
+        {
+            1, 2, 3
+        }, new byte[]
+        {
+            1, 3, 2
+        }, new byte[]
+        {
+            2, 1, 3
+        }, new byte[]
+        {
+            2, 3, 1
+        }, new byte[]
+        {
+            3, 1, 2
+        }, new byte[]
+        {
+            3, 2, 1
+        }
+    };
 
     public static final int INT1 = 1;
     public static final int INT2 = 2;
@@ -174,6 +197,8 @@ public class PermutationGeneratorTest
         } );
         Assert.assertEquals( "Permutation generator must be of correct optimized type", BytePermutationGenerator.class,
             generator.getClass() );
+
+        this.verifySequences( generator, BYTE_SEQUENCES, EqualsMethodTester.INSTANCE );
     }
 
     @Test
@@ -231,4 +256,74 @@ public class PermutationGeneratorTest
             DoublePermutationGenerator.class, generator.getClass() );
     }
 
+    protected static interface EqualityTester
+    {
+        public boolean equals( Object o1, Object o2 );
+    }
+
+    protected static class EqualsMethodTester
+        implements EqualityTester
+    {
+        public static final EqualsMethodTester INSTANCE = new EqualsMethodTester();
+
+        @Override
+        public boolean equals( Object o1, Object o2 )
+        {
+            return o1.equals( o2 );
+        }
+    }
+
+    protected static class ReferenceTester
+        implements EqualityTester
+    {
+        @Override
+        public boolean equals( Object o1, Object o2 )
+        {
+            return o1 == o2;
+        }
+    }
+
+    protected <ArrayType> void verifySequences( PermutationGenerator<ArrayType> generator, ArrayType[] sequences,
+        EqualityTester eqTester )
+    {
+        Iterator<ArrayType> iter = generator.iterator();
+        int sequenceIndex = 0;
+        while( iter.hasNext() )
+        {
+            ArrayType nextPermutation = iter.next();
+            boolean result = true;
+            for( int x = 0; x < Array.getLength( nextPermutation ); ++x )
+            {
+                result = result
+                    && eqTester.equals( Array.get( nextPermutation, x ), Array.get( sequences[sequenceIndex], x ) );
+                if( !result )
+                {
+                    break;
+                }
+            }
+
+            Assert.assertTrue( "The permutation must be correct one. Got " + this.arrayToString( nextPermutation )
+                + ", expected " + this.arrayToString( sequences[sequenceIndex] ) + ".", result );
+            ++sequenceIndex;
+        }
+
+        Assert.assertEquals( "The amount of permutations must be expected", sequences.length, sequenceIndex );
+    }
+
+    protected String arrayToString( Object array )
+    {
+        StringBuilder result = new StringBuilder( "[" );
+        int arrayLen = Array.getLength( array );
+        for( int x = 0; x < arrayLen; ++x )
+        {
+            result.append( Array.get( array, x ) );
+            if( x < arrayLen - 1 )
+            {
+                result.append( ", " );
+            }
+        }
+
+        result.append( "]" );
+        return result.toString();
+    }
 }

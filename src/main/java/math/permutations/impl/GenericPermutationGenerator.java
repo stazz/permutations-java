@@ -42,7 +42,7 @@ public class GenericPermutationGenerator<T> extends AbstractGenericPermutationGe
     @Override
     protected Iterator<T[]> createIterator()
     {
-        return new AbstractPermutationIterator<T[]>( this.getArray(), this.getTotal() )
+        return new AbstractGenericPermutationIterator<T>( this.getArray(), this.getTotal() )
         {
             @Override
             protected void makeNextPermutation( T[] array )

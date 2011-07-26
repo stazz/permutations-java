@@ -37,7 +37,8 @@ public class BytePermutationGenerator extends AbstractPermutationGenerator<byte[
     @Override
     protected Iterator<byte[]> createIterator()
     {
-        return new AbstractPermutationIterator<byte[]>( this._array, this.getTotal() )
+        return new AbstractPermutationIterator<byte[]>( Arrays.copyOf( this._array, this._array.length ),
+            this.getTotal() )
         {
             @Override
             protected void makeNextPermutation( byte[] array )

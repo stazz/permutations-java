@@ -37,7 +37,8 @@ public class LongPermutationGenerator extends AbstractPermutationGenerator<long[
     @Override
     protected Iterator<long[]> createIterator()
     {
-        return new AbstractPermutationIterator<long[]>( this._array, this.getTotal() )
+        return new AbstractPermutationIterator<long[]>( Arrays.copyOf( this._array, this._array.length ),
+            this.getTotal() )
         {
             @Override
             protected void makeNextPermutation( long[] array )

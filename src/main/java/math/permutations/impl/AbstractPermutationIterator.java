@@ -14,9 +14,7 @@
 
 package math.permutations.impl;
 
-import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -32,8 +30,7 @@ public abstract class AbstractPermutationIterator<T>
 
     public AbstractPermutationIterator( T array, BigInteger total )
     {
-        int arrayLength = Array.getLength( array );
-        this._array = (T) Arrays.copyOf( (Object[]) array, arrayLength );
+        this._array = array;
         this._total = total;
         this._permutationsLeft = total;
     }
