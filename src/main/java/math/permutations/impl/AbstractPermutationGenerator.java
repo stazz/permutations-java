@@ -37,13 +37,32 @@ public abstract class AbstractPermutationGenerator<T>
 
     public AbstractPermutationGenerator( ArrayInfo arrayInfo )
     {
+        // Retrieved from http://en.wikipedia.org/wiki/Permutation on 26.07.2011
+        // Amount of permutations of a multiset is
+        //         n!
+        // -----------------
+        // m_1! m_2! ... m_s!
+        //
+        // Where n is the size of the multiset, s is a amount of distinct elements, and m_i is multiplicity of i:th distinct element.
+
         BigInteger upper = getFactorial( arrayInfo.getArrayLength() );
         BigInteger lower = BigInteger.ONE;
         for( int multiplicity : arrayInfo.getMultiplicities() )
         {
-            lower = lower.multiply( getFactorial( multiplicity ) );
+            BigInteger f = getFactorial( multiplicity );
+            if( f != BigInteger.ONE )
+            {
+                lower = lower.multiply( f );
+            }
         }
-        this._total = upper.divide( lower );
+        if( lower != BigInteger.ONE )
+        {
+            this._total = upper.divide( lower );
+        }
+        else
+        {
+            this._total = upper;
+        }
     }
 
     @Override
