@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>math.permutations</groupId>
+  <artifactId>math.permutations</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  
+  <name>An API and implementation in Java for easy iteration over permutations. </name>
+  <description>A small project encapsulating API &amp; implementation required for easy iteration over permutations of any objects. Provides also an extensible way of creating performance-optimized permutation iterators for certain types.</description>
+  
+  <inceptionYear>2011</inceptionYear>
+  
+  <dependencyManagement>
+  	<dependencies>
+  	</dependencies>
+  </dependencyManagement>
+  
+  <developers>
+    <developer>
+      <id>stas.dev+permutations-java@gmail.com</id>
+      <name>Stanislav Muhametsin</name>
+      <email>stas.dev+permutations-java@gmail.com</email>
+      <timezone>UTC+2</timezone>
+    </developer>
+  </developers>
+  
+  <properties>
+  	<version.jdk.compiler>1.6</version.jdk.compiler>
+    <version.maven.compiler>2.3.2</version.maven.compiler>
+    <version.junit>4.8.1</version.junit>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.maven.compiler}</version>
+        <configuration>
+          <source>${version.jdk.compiler}</source>
+          <target>${version.jdk.compiler}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>
