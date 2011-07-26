@@ -1,0 +1,30 @@
+Permutations-Java is a small project in order to make it easy to iterate over all permutations of any objects.
+
+The core interface is PermutationGenerator, which extents Iterable interface in order to use enhanced for-loop to iterate over permutations. There are various implementations for PermutationGenerator, and the choice which one to use is up for the user. The user may instantiate the generic versions of PermutationGenerator, which can iterate over any array of objects, even the ones which are not of type Comparable. However, if performance is the key issue, the optimized versions of PermutationGenerator for byte, short, int, long, float, and double -arrays are also available.
+
+The instantation of various specializations of PermutationGenerator happens through PermutationGeneratorProvider factory class. It contains many static methods for easy creation of PermutationGenerators.
+
+Here is a short example:
+
+// Create a generic version to iterate over permutations of Strings
+String[] stringArray = ...;
+PermutationGenerator<String[]> generator = PermutationGeneratorProvider
+  .createGenericPermutationGenerator( String.class, stringArray );
+
+// If you can't easily create an array, it is possible to use a Collection
+List<String> stringList = ...;
+PermutationGenerator<String[]> generator2 = PermutationGeneratorProvider
+  .createGenericPermutationGenerator( String.class, stringList );
+  
+// It is also possible to create generator from Iterable, however for brevity, it is omitted.
+
+// In order to create optimized generator for example, for integer array, use the following code
+int[] intArray = ...;
+PermutationGenerator<int[]> optimizedGenerator = PermutationGeneratorProvider
+  .createOptimizedGenerator( intArray );
+  
+// It is also possible to create generator for objects of arbitrary type by providing a custom comparator
+Object[] objArray = ...;
+Comparator<Object> comparator = ...;
+PermutationGenerator<Object[]> genericGenerator = PermutationGeneratorProvider
+  .createGenericPErmutationGenerator(Object.class, comparator, objArray);
