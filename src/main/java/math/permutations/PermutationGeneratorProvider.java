@@ -150,7 +150,7 @@ public final class PermutationGeneratorProvider
     /**
      * Creates an optimized version of {@link PermutationGenerator}, if possible. The optimized version will use the
      * array of primitives (eg int[], double[]) instead of array of auto-boxed objects (eg {@link Integer}[],
-     * {@link Double[]}).
+     * {@link Double}[]).
      * 
      * @param array The array.
      * @return The optimized permutation generator for type of the given array.

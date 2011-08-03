@@ -1,6 +1,6 @@
-Permutations-Java is a small project in order to make it easy to iterate over all permutations of any objects.
+Permutations-Java is a small project in order to make it easy to always iterate in the same order over all permutations of multiset of any objects.
 
-The core interface is PermutationGenerator, which extents Iterable interface in order to use enhanced for-loop to iterate over permutations. There are various implementations for PermutationGenerator, and the choice which one to use is up for the user. The user may instantiate the generic versions of PermutationGenerator, which can iterate over any array of objects, even the ones which are not of type Comparable. However, if performance is the key issue, the optimized versions of PermutationGenerator for byte, short, int, long, float, and double -arrays are also available.
+The core interface is PermutationGenerator, which extents Iterable interface in order to be used in enhanced for-loop to iterate over permutations. There are various implementations for PermutationGenerator, and the choice which one to use is up for the user. The user may instantiate the generic versions of PermutationGenerator, which can iterate over any array of objects, even the ones which are not of type Comparable. However, if performance is the key issue, the optimized versions of PermutationGenerator for byte, short, int, long, float, and double -arrays are also available.
 
 The instantation of various specializations of PermutationGenerator happens through PermutationGeneratorProvider factory class. It contains many static methods for easy creation of PermutationGenerators.
 
@@ -28,3 +28,10 @@ Object[] objArray = ...;
 Comparator<Object> comparator = ...;
 PermutationGenerator<Object[]> genericGenerator = PermutationGeneratorProvider
   .createGenericPermutationGenerator(Object.class, comparator, objArray);
+  
+// No matter how the PermutationGenerator is acquired, iterating is always easy, happens in same order. Additionally, iterating may be done any amount of times for a single PermutationGenerator, as iterating does not in any way change the PermutationGenerator.
+// The following will print all permutations of generator2, created earlier.
+for (String[] permutation : generator2)
+{
+  System.out.println(Arrays.toString(permutation));
+}
