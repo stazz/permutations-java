@@ -49,6 +49,7 @@ public abstract class AbstractPermutationIterator<T>
         {
             throw new NoSuchElementException( "No more permutations available." );
         }
+
         if( !this._permutationsLeft.equals( this._total ) )
         {
             this.makeNextPermutation( this._array );

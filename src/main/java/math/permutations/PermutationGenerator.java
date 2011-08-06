@@ -21,8 +21,8 @@ import java.util.Iterator;
 /**
  * <p>
  * The algorithm is described by Kenneth H. Rosen, Discrete Mathematics and Its Applications, 2nd edition (NY:
- * McGraw-Hill, 1991), pp. 282-284. Java class example on {@link http://www.merriampark.com/perm.htm} . Generic version
- * & small optimizations by author.
+ * McGraw-Hill, 1991), pp. 282-284. Java class example on {@link http://www.merriampark.com/perm.htm} . Generic and
+ * optimized versions along with small optimizations by author.
  * </p>
  * 
  * <p>
@@ -45,10 +45,15 @@ import java.util.Iterator;
  * TODO: null values (for generic permutation generators - is null less or greater than anything else?) This seems to be
  * possible only by providing custom comparator, since Arrays.sort throws on null values.
  * </p>
+ * <p>
+ * TODO permutation generator for multi-dimensional arrays.
+ * </p>
  * 
  * @author Stanislav Muhametsin
  * @param <T> The type of the permutation array.
- */
+ * @see PermutationGeneratorProvider
+ * 
+ **/
 public interface PermutationGenerator<T>
     extends Iterable<T>
 {

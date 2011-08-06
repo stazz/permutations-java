@@ -150,26 +150,28 @@ public final class PermutationGeneratorProvider
     /**
      * Creates an optimized version of {@link PermutationGenerator}, if possible. The optimized version will use the
      * array of primitives (eg int[], double[]) instead of array of auto-boxed objects (eg {@link Integer}[],
-     * {@link Double}[]).
+     * {@link Double}[]). The given array will be copied using one of {@link Arrays#copyOf(Object[], int)} methods.
+     * Additionally, it will be sorted using one of {@link Arrays#sort(Object[])} methods.
      * 
      * @param array The array.
      * @return The optimized permutation generator for type of the given array.
-     * @exception IllegalArgumentException If the there is no optimized permutation generator for the type of the given
-     *                array.
+     * @exception NoSuchOptimizedPermutationGenerator If the there is no optimized permutation generator for the type of
+     *                the given array.
      */
     public static <ArrayType> PermutationGenerator<ArrayType> createOptimizedGenerator( ArrayType array )
     {
         OptimizedGeneratorCreator creator = _optimizedGeneratorCreators.get( array.getClass() );
         if( creator == null )
         {
-            throw new IllegalArgumentException( "Could not find optimized permutation generator creator for type "
-                + array.getClass() + "." );
+            throw new NoSuchOptimizedPermutationGenerator( array.getClass() );
         }
         return creator.createOptimizedGenerator( array );
     }
 
     /**
-     * Creates a new permutation generator for given item class.
+     * Creates a new permutation generator for given item class. The given array will be copied using one of
+     * {@link Arrays#copyOf(Object[], int)} methods. Additionally, it will be sorted using one of
+     * {@link Arrays#sort(Object[])} methods.
      * 
      * @param items The permutation items.
      * @return The {@link PermutationGenerator} for given items.
@@ -189,7 +191,10 @@ public final class PermutationGeneratorProvider
 
     /**
      * A helper method for invoking
-     * {@link PermutationGeneratorProvider#createGenericPermutationGenerator(Class, Comparable...)} method.
+     * {@link PermutationGeneratorProvider#createGenericPermutationGenerator(Class, Comparable...)} method. The array
+     * will be created from the collection, and it will <b>NOT</b> be copied when given to the
+     * {@link PermutationGenerator}. However, the created array will be sorted using one of
+     * {@link Arrays#sort(Object[])} methods.
      * 
      * @param itemClass The common class of the items of permutation array.
      * @param items The permutation items.
@@ -225,7 +230,9 @@ public final class PermutationGeneratorProvider
     }
 
     /**
-     * Creates a new permutation generator for given item class using given comparator.
+     * Creates a new permutation generator for given item class using given comparator.The given array will be copied
+     * using one of {@link Arrays#copyOf(Object[], int)} methods. Additionally, it will be sorted using one of
+     * {@link Arrays#sort(Object[], Comparator)} methods.
      * 
      * @param comparator The comparator to use.
      * @param items The permutation items.
@@ -246,7 +253,10 @@ public final class PermutationGeneratorProvider
 
     /**
      * A helper method for invoking
-     * {@link PermutationGeneratorProvider#createGenericPermutationGenerator(Class, Comparator, Object...)} method.
+     * {@link PermutationGeneratorProvider#createGenericPermutationGenerator(Class, Comparator, Object...)} method.The
+     * array will be created from the collection, and it will <b>NOT</b> be copied when given to the
+     * {@link PermutationGenerator}. However, the created array will be sorted using one of
+     * {@link Arrays#sort(Object[], Comparator)} methods.
      * 
      * @param itemClass The common class of the items of permutation array.
      * @param comparator The comparator to use.
