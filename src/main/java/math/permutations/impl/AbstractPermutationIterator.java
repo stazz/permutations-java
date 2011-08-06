@@ -16,6 +16,7 @@ package math.permutations.impl;
 
 import java.math.BigInteger;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * 
@@ -44,12 +45,17 @@ public abstract class AbstractPermutationIterator<T>
     @Override
     public T next()
     {
+        if( this._permutationsLeft.compareTo( BigInteger.ZERO ) <= 0 )
+        {
+            throw new NoSuchElementException( "No more permutations available." );
+        }
         if( !this._permutationsLeft.equals( this._total ) )
         {
             this.makeNextPermutation( this._array );
         }
 
         this._permutationsLeft = this._permutationsLeft.subtract( BigInteger.ONE );
+
         return this._array;
     }
 
