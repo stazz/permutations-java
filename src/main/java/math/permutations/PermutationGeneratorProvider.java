@@ -155,7 +155,7 @@ public final class PermutationGeneratorProvider
      * 
      * @param array The array.
      * @return The optimized permutation generator for type of the given array.
-     * @exception NoSuchOptimizedPermutationGenerator If the there is no optimized permutation generator for the type of
+     * @exception NoSuchOptimizedPermutationGeneratorException If the there is no optimized permutation generator for the type of
      *                the given array.
      */
     public static <ArrayType> PermutationGenerator<ArrayType> createOptimizedGenerator( ArrayType array )
@@ -163,7 +163,7 @@ public final class PermutationGeneratorProvider
         OptimizedGeneratorCreator creator = _optimizedGeneratorCreators.get( array.getClass() );
         if( creator == null )
         {
-            throw new NoSuchOptimizedPermutationGenerator( array.getClass() );
+            throw new NoSuchOptimizedPermutationGeneratorException( array.getClass() );
         }
         return creator.createOptimizedGenerator( array );
     }

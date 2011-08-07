@@ -18,12 +18,12 @@ package math.permutations;
  * 
  * @author 2011 Stanislav Muhametsin
  */
-public class NoSuchOptimizedPermutationGenerator extends RuntimeException
+public class NoSuchOptimizedPermutationGeneratorException extends RuntimeException
 {
 
     private final Class<?> _arrayClass;
 
-    public NoSuchOptimizedPermutationGenerator( Class<?> arrayClass )
+    public NoSuchOptimizedPermutationGeneratorException( Class<?> arrayClass )
     {
         super( "The permutation generator for array " + arrayClass + " was not found." );
         this._arrayClass = arrayClass;
